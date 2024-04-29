@@ -1,22 +1,37 @@
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import React from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
 import Home from './app/screens/Home';
 import Login from './app/screens/Login';
+import ProductDetails, {
+  Params as ProductDetailsPrams,
+} from './app/screens/ProductDetails';
 
-const Stack = createStackNavigator();
+const stack = createStackNavigator();
 
-export default function App() {
+export type RootStackParamList = {
+  Home: undefined;
+  ProductDetails: ProductDetailsPrams;
+};
+
+function App(): React.JSX.Element {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
-        <Stack.Screen 
-        name="Login" 
+      <stack.Navigator initialRouteName='Login'>
+        <stack.Screen 
+        name='Login' 
         component={Login}
-        options={{headerShown: false, 
-          headerStyle:{backgroundColor:'#ffa000'},
-         }} />
-        <Stack.Screen name="Home" component={Home} />
-      </Stack.Navigator>
+        options={{
+          headerShown: false,
+          headerStyle: {backgroundColor: '#aff0040'},
+        }} 
+        />
+        <stack.Screen name='Home' component={Home} />
+        <stack.Screen name='ProductDetails' component={ProductDetails} />
+      </stack.Navigator>
     </NavigationContainer>
   );
+  
 }
+
+export default App;
