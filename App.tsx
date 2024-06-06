@@ -1,37 +1,62 @@
 import React from 'react';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
+import { Button } from 'react-native';
+
 import Home from './app/screens/Home';
 import Login from './app/screens/Login';
-import ProductDetails, {
-  Params as ProductDetailsPrams,
-} from './app/screens/ProductDetails';
+import ProductDetails from './app/screens/ProductDetails';
+import AddProduct from './app/screens/AddProduct';
 
-const stack = createStackNavigator();
+const Stack = createStackNavigator<RootStackParamList>();
 
 export type RootStackParamList = {
-  Home: undefined;
-  ProductDetails: ProductDetailsPrams;
+    Login: undefined;
+    Home: undefined;
+    ProductDetails: { product: Product };
+    AddProduct: undefined;
 };
 
-function App(): React.JSX.Element {
-  return (
-    <NavigationContainer>
-      <stack.Navigator initialRouteName='Login'>
-        <stack.Screen 
-        name='Login' 
-        component={Login}
-        options={{
-          headerShown: false,
-          headerStyle: {backgroundColor: '#aff0040'},
-        }} 
+const HomeHeaderRight = (): React.JSX.Element => {
+    const navigation = useNavigation();
+    return (
+        <Button
+            title="Add Product"
+            onPress={() => navigation.navigate('AddProduct')}
         />
-        <stack.Screen name='Home' component={Home} />
-        <stack.Screen name='ProductDetails' component={ProductDetails} />
-      </stack.Navigator>
-    </NavigationContainer>
-  );
-  
-}
+    );
+};
+
+const App = (): React.JSX.Element => {
+    return (
+        <NavigationContainer>
+            <Stack.Navigator initialRouteName="Login">
+                <Stack.Screen
+                    name="Login"
+                    component={Login}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                    name="Home"
+                    component={Home}
+                    options={{
+                        title: 'Products',
+                        headerRight: () => <HomeHeaderRight />,
+                    }}
+                />
+                <Stack.Screen
+                    name="ProductDetails"
+                    component={ProductDetails}
+                    options={{ title: 'Product Details' }}
+                />
+                <Stack.Screen
+                    name="AddProduct"
+                    component={AddProduct}
+                    options={{ title: 'Add Product' }}
+                />
+            </Stack.Navigator>
+        </NavigationContainer>
+    );
+};
 
 export default App;
